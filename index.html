@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="">
+  <style type="text/css">
+    :root {
+      --blue: #00afe7;
+      --fonts: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      margin:  0;
+      height:  100%;
+    }
+
+    html {
+      font-size:  62.5%;
+      font-family: var(--fonts);
+    }
+
+    body {
+      font-size:  1.6rem;
+    }
+
+    main {
+      height: 100%;
+      width: 1024px;
+      margin: 0 auto;
+      display:  flex;
+      flex-direction:  column;
+      justify-content:  space-around;
+    }
+
+    app-kompakkt {
+      width: 100%;
+      border-radius:  1rem;
+      overflow:  hidden;
+      flex-grow: 10;
+
+      box-shadow:  4rem 4rem 8rem #d9d9d9,
+             -4rem -4rem 8rem #ffffff;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      margin: 2rem 0;
+      z-index: 1;
+    }
+
+    input {
+      border-radius: 0.5rem;
+      padding: 1rem;
+      border: solid 0.1rem var(--blue);
+      flex-grow:  10;
+      font-family: var(--fonts);
+      font-size: 1.6rem;
+    }
+
+    button {
+      margin-left: 1rem;
+      padding: 1rem 2rem;
+      background: var(--blue);
+      border-radius: 2rem;
+      border: none;
+      color: white;
+      font-weight: 600;
+      font-size: 1.6rem;
+      cursor: pointer;
+      font-family: var(--fonts);
+    }
+
+    h1 {
+      color:  var(--blue);
+      margin:  2rem 0;
+      z-index: 1;
+    }
+  </style>
+  <script type="text/javascript" src="kompakkt-standalone.js" defer></script>
+  <script type="text/javascript">
+    window.addEventListener('load', () => {
+      const form = document.querySelector('form');
+      const viewer = document.querySelector('app-kompakkt');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        // http://localhost:8080/SezuanMap.babylon
+        const url = event.target.elements.namedItem('resource-url');
+
+        const split = url.value.split('/');
+        const resource = split.pop();
+        const endpoint = split.join('/');
+
+        viewer.outerHTML = `
+        <app-kompakkt endpoint="${endpoint}" resource="${resource}"></app-kompakkt>
+        `;
+      })
+    }, { once: true });
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Kompakkt Standalone Viewer</h1>
+    <app-kompakkt></app-kompakkt>
+    <form>
+      <input type="text" name="resource-url" placeholder="Enter the URL to the resource you want to load">
+      <button type="submit">Load resource</button>
+    </form>
+  </main>
+</body>
+</html>
