@@ -1,0 +1,15 @@
+{
+  "name": "viewer-standalone",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "swc kompakkt-standalone.js -o kompakkt-standalone.min.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "devDependencies": {
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.2.222"
+  }
+}

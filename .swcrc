@@ -1,0 +1,12 @@
+{
+  "minify": true,
+  "jsc": {
+    "target": "es5",  
+    "minify": {
+      "compress": {
+        "unused": true
+      },
+      "mangle": true
+    }
+  }
+}
