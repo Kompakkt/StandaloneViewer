@@ -6,17 +6,17 @@ This repository hosts a JavaScript file which can be included on any website to 
 
 ## How to use the viewer in standalone mode?
 
-Include the `kompakkt-standalone.js` JavaScript file in your pages HTML, preferably in the `<head>`-section
+Include the `kompakkt-standalone.js` or the `kompakkt-standalone.min.js` JavaScript file in your pages HTML, preferably in the `<head>`-section
 
 ```html
 <head>
-  <!-- Other code... -->
+  <!-- Some code... -->
   <script type="text/javascript" src="kompakkt-standalone.js" defer></script>
 </head>
 ```
 
 This file will add a custom element called `<app-kompakkt>`, which can now be used to load the standalone version of the viewer.
-By default, this will target the (Kompakkt instance hosted at the University of Cologne)[https://kompakkt.de/viewer/index.html].
+By default, this will target the [Kompakkt instance hosted at the University of Cologne](https://kompakkt.de/viewer/index.html).
 
 The `<app-kompakkt>`-element needs at mininum the `endpoint` and the `resource` attributes to work.
 
