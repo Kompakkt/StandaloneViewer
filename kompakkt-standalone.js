@@ -15,12 +15,13 @@ class AppKompakkt extends HTMLElement {
 
     for (const prop of allowed) {
       const item = this.attributes.getNamedItem(prop);
+      if (!item) continue;
       const { nodeName, nodeValue } = item;
       dataset[nodeName] = nodeValue;
     }
 
     // Build url using specified or default instance
-    const url = new URL(this.instance ?? 'https://kompakkt.de/viewer/index.html');
+    const url = new URL(dataset.instance ?? 'https://kompakkt.de/viewer/index.html');
     for (const [key, value] of Object.entries(dataset)) {
       if (!value) continue;
       url.searchParams.set(key, value.toString());
