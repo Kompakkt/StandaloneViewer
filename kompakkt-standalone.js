@@ -31,9 +31,12 @@ class AppKompakkt extends HTMLElement {
     const iframe = document.createElement('iframe');
     iframe.src = url.toString();
     iframe.allowFullscreen = true;
-    const style = this.attributes.getNamedItem('style');
-    if (style) iframe.setAttribute('style', style.nodeValue);
+    iframe.style.height = '100%';
+    iframe.style.width = '100%';
+    iframe.style.border = 'none';
     this.shadowRoot.append(iframe);
+
+    this.style.display = 'block';
   }
 }
 
