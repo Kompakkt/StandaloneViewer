@@ -10,8 +10,8 @@ class AppKompakkt extends HTMLElement {
 
   buildSrc() {
     // Build dataset from allowed properties
-    const allowed = ['instance', 'endpoint', 'resource', 'settings', 'annotations'];
-    const dataset = { standalone: true };
+    const allowed = ['instance', 'endpoint', 'resource', 'settings', 'annotations', 'minimal'];
+    const dataset = { standalone: true, minimal: true };
 
     for (const prop of allowed) {
       const item = this.attributes.getNamedItem(prop);
@@ -24,7 +24,7 @@ class AppKompakkt extends HTMLElement {
     const url = new URL(dataset.instance ?? 'https://kompakkt.de/viewer/index.html');
     for (const [key, value] of Object.entries(dataset)) {
       if (!value) continue;
-      url.searchParams.set(key, value.toString());
+      url.searchParams.set(key, encodeURIComponent(value.toString()));
     }
 
     // Create, configure and attach iframe to shadow DOM

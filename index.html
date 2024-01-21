@@ -29,9 +29,16 @@
       height: 100%;
       width: 1024px;
       margin: 0 auto;
-      display:  flex;
-      flex-direction:  column;
-      justify-content:  space-around;
+      display: grid;
+      grid-auto-columns: 100%;
+      grid-template-rows: auto 1fr auto;
+      box-sizing: border-box;
+      grid-gap: 2rem;
+      padding: 2rem;
+    }
+
+    main > * {
+      margin: 0;
     }
 
     app-kompakkt {
@@ -39,19 +46,30 @@
       border-radius:  1rem;
       overflow:  hidden;
       flex-grow: 10;
-
-      box-shadow:  4rem 4rem 8rem #d9d9d9,
-             -4rem -4rem 8rem #ffffff;
     }
 
     form {
       display: flex;
-      align-items: center;
-      margin: 2rem 0;
+      align-items: stretch;
+      flex-direction: column;
+      margin: 1rem 0;
       z-index: 1;
+      gap: 1rem;
     }
 
-    input {
+    details summary {
+      font-size: 2rem;
+      color:  var(--blue);
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      color:  var(--blue);
+    }
+
+    input, textarea {
+      appearance: none;
+      box-sizing: border-box;
       border-radius: 0.5rem;
       padding: 1rem;
       border: solid 0.1rem var(--blue);
@@ -61,7 +79,6 @@
     }
 
     button {
-      margin-left: 1rem;
       padding: 1rem 2rem;
       background: var(--blue);
       border-radius: 2rem;
@@ -73,42 +90,82 @@
       font-family: var(--fonts);
     }
 
-    h1 {
-      color:  var(--blue);
-      margin:  2rem 0;
-      z-index: 1;
-    }
+
   </style>
   <script type="text/javascript" src="kompakkt-standalone.js" defer></script>
   <script type="text/javascript">
+    const decodeSafeString = (input) => {
+      return atob(decodeURIComponent(input));
+    }
+
+    const encodeSafeString = (input) => {
+      const asString = typeof input === 'string' ? input : JSON.stringify(input);
+      return encodeURIComponent(btoa(asString));
+    }
+
+    const compressState = (jsonString) => {
+      console.log('Compressing state')
+      const base64 = encodeSafeString(jsonString)
+      const url = new URL(window.location.href);
+      url.searchParams.set('state', base64);
+      console.log('Compressed from', jsonString.length, 'to', base64.length);
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    const loadFormFromState = () => {
+      const url = new URL(window.location.href);
+      const state = url.searchParams.get('state');
+      if (!state) return;
+      console.log('Loading compressed state', state);
+      const jsonString = decodeSafeString(state);
+      const {resource, annotations} = JSON.parse(jsonString);
+      console.log('Decompressed to', JSON.parse(jsonString));
+      const form = document.querySelector('form');
+      form.elements.namedItem('resource').value = resource ?? '';
+      form.elements.namedItem('annotations').value = JSON.stringify(annotations, null, 2) ?? '';
+      reloadViewer({ resource, annotations });
+    }
+
+
+
+    const reloadViewer = (attributes) => {
+      console.log('Reloading viewer', attributes);
+      const viewer = document.querySelector('app-kompakkt');
+      const attributeString = Object.entries(attributes).map(([name, value]) => `${name}="${encodeSafeString(value)}"`).join(' ');
+      console.log(attributeString);
+      viewer.outerHTML = `<app-kompakkt ${attributeString}></app-kompakkt>`;
+    }
+
     window.addEventListener('load', () => {
       const form = document.querySelector('form');
-      const viewer = document.querySelector('app-kompakkt');
-
       form.addEventListener('submit', (event) => {
         event.preventDefault();
-        // http://localhost:8080/SezuanMap.babylon
-        const url = event.target.elements.namedItem('resource-url');
 
-        const split = url.value.split('/');
-        const resource = split.pop();
-        const endpoint = split.join('/');
+        const {resource, annotations: annotationsString} = Object.fromEntries([...document.querySelector('form').elements].map(el => [el.name, el.value.trim()]).filter(([name, value]) => name && value));
 
-        viewer.outerHTML = `
-        <app-kompakkt endpoint="${endpoint}" resource="${resource}"></app-kompakkt>
-        `;
-      })
-    }, { once: true });
+        const annotations = JSON.parse(annotationsString || '{}');
+
+        compressState(JSON.stringify({resource, annotations}));
+
+        reloadViewer({ resource, annotations });
+      });
+
+      try {loadFormFromState()} catch (_) {}
+    });
   </script>
 </head>
 <body>
   <main>
     <h1>Kompakkt Standalone Viewer</h1>
     <app-kompakkt></app-kompakkt>
-    <form>
-      <input type="text" name="resource-url" placeholder="Enter the URL to the resource you want to load">
-      <button type="submit">Load resource</button>
-    </form>
+    <details open>
+      <summary>Settings</summary>
+      <form>
+        <input type="text" name="resource" placeholder="Enter the URL to the resource you want to load">
+        <textarea name="annotations" cols="30" rows="10" placeholder="Enter IIIF 3D JSON Annotations"></textarea>
+        <button type="submit">Load Viewer</button>
+      </form>
+    </details>
   </main>
 </body>
 </html>
