@@ -10,7 +10,7 @@ class AppKompakkt extends HTMLElement {
 
   buildSrc() {
     // Build dataset from allowed properties
-    const allowed = ['instance', 'endpoint', 'resource', 'settings', 'annotations', 'minimal'];
+    const allowed = ['instance', 'endpoint', 'settings', 'manifest', 'minimal'];
     const dataset = { standalone: true, minimal: true };
 
     for (const prop of allowed) {
@@ -21,7 +21,7 @@ class AppKompakkt extends HTMLElement {
     }
 
     // Build url using specified or default instance
-    const url = new URL(dataset.instance ?? 'https://kompakkt.de/viewer/index.html');
+    const url = new URL(dataset.instance ?? 'http://localhost:4200/viewer/index.html');
     for (const [key, value] of Object.entries(dataset)) {
       if (!value) continue;
       url.searchParams.set(key, encodeURIComponent(value.toString()));

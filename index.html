@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,18 +12,19 @@
       --fonts: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
-    html, body {
-      margin:  0;
-      height:  100%;
+    html,
+    body {
+      margin: 0;
+      height: 100%;
     }
 
     html {
-      font-size:  62.5%;
+      font-size: 62.5%;
       font-family: var(--fonts);
     }
 
     body {
-      font-size:  1.6rem;
+      font-size: 1.6rem;
     }
 
     main {
@@ -37,14 +39,14 @@
       padding: 2rem;
     }
 
-    main > * {
+    main>* {
       margin: 0;
     }
 
     app-kompakkt {
       width: 100%;
-      border-radius:  1rem;
-      overflow:  hidden;
+      border-radius: 1rem;
+      overflow: hidden;
       flex-grow: 10;
     }
 
@@ -59,21 +61,22 @@
 
     details summary {
       font-size: 2rem;
-      color:  var(--blue);
+      color: var(--blue);
     }
 
     h1 {
       font-size: 2.4rem;
-      color:  var(--blue);
+      color: var(--blue);
     }
 
-    input, textarea {
+    input,
+    textarea {
       appearance: none;
       box-sizing: border-box;
       border-radius: 0.5rem;
       padding: 1rem;
       border: solid 0.1rem var(--blue);
-      flex-grow:  10;
+      flex-grow: 10;
       font-family: var(--fonts);
       font-size: 1.6rem;
     }
@@ -89,8 +92,6 @@
       cursor: pointer;
       font-family: var(--fonts);
     }
-
-
   </style>
   <script type="text/javascript" src="kompakkt-standalone.js" defer></script>
   <script type="text/javascript">
@@ -118,12 +119,11 @@
       if (!state) return;
       console.log('Loading compressed state', state);
       const jsonString = decodeSafeString(state);
-      const {resource, annotations} = JSON.parse(jsonString);
+      const manifest = JSON.parse(jsonString);
       console.log('Decompressed to', JSON.parse(jsonString));
       const form = document.querySelector('form');
-      form.elements.namedItem('resource').value = resource ?? '';
-      form.elements.namedItem('annotations').value = JSON.stringify(annotations, null, 2) ?? '';
-      reloadViewer({ resource, annotations });
+      form.elements.namedItem('manifest').value = JSON.stringify(manifest, null, 2) ?? '';
+      reloadViewer({ manifest });
     }
 
 
@@ -141,19 +141,23 @@
       form.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const {resource, annotations: annotationsString} = Object.fromEntries([...document.querySelector('form').elements].map(el => [el.name, el.value.trim()]).filter(([name, value]) => name && value));
+        const { manifest: manifestString } = Object.fromEntries([...document.querySelector('form').elements].map(el => [el.name, el.value.trim()]).filter(([name, value]) => name && value));
 
-        const annotations = JSON.parse(annotationsString || '{}');
+        console.log('Loading viewer with manifest', manifestString);
+        //typeof manifest
+        console.log('Type of manifest', typeof manifestString);
+        const manifest = JSON.parse(manifestString);
 
-        compressState(JSON.stringify({resource, annotations}));
+        compressState(JSON.stringify({ manifest }));
 
-        reloadViewer({ resource, annotations });
+        reloadViewer({ manifest });
       });
 
-      try {loadFormFromState()} catch (_) {}
+      try { loadFormFromState() } catch (_) { }
     });
   </script>
 </head>
+
 <body>
   <main>
     <h1>Kompakkt Standalone Viewer</h1>
@@ -161,11 +165,11 @@
     <details open>
       <summary>Settings</summary>
       <form>
-        <input type="text" name="resource" placeholder="Enter the URL to the resource you want to load">
-        <textarea name="annotations" cols="30" rows="10" placeholder="Enter IIIF 3D JSON Annotations"></textarea>
+        <textarea name="manifest" cols="30" rows="10" placeholder="Enter IIIF 3D JSON Manifest"></textarea>
         <button type="submit">Load Viewer</button>
       </form>
     </details>
   </main>
 </body>
+
 </html>
