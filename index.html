@@ -143,9 +143,7 @@
 
         const { manifest: manifestString } = Object.fromEntries([...document.querySelector('form').elements].map(el => [el.name, el.value.trim()]).filter(([name, value]) => name && value));
 
-        console.log('Loading viewer with manifest', manifestString);
         //typeof manifest
-        console.log('Type of manifest', typeof manifestString);
         const manifest = JSON.parse(manifestString);
 
         compressState(JSON.stringify({ manifest }));
