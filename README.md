@@ -6,7 +6,7 @@ This repository hosts a JavaScript file which can be included on any website to 
 
 ## How to use the viewer in standalone mode?
 
-Include the `kompakkt-standalone.js` or the `kompakkt-standalone.min.js` JavaScript file in your pages HTML, preferably in the `<head>`-section
+Include `kompakkt-standalone.min.js` in your page's HTML, preferably in the `<head>`-section. The unminified `kompakkt-standalone.js` is also published, for anyone who wants to read the source.
 
 ```html
 <head>
@@ -18,15 +18,15 @@ Include the `kompakkt-standalone.js` or the `kompakkt-standalone.min.js` JavaScr
 This file will add a custom element called `<app-kompakkt>`, which can now be used to load the standalone version of the viewer.
 By default, this will target the [Kompakkt instance hosted at the TIB Hanover](https://kompakkt.de/viewer/index.html).
 
-The `<app-kompakkt>`-element needs at mininum the `endpoint` and the `resource` attributes to work.
+The `<app-kompakkt>`-element needs at minimum the `endpoint` and the `resource` attributes to work.
 
 | Attribute   | Optional | Description |
 | -- | -- | -- |
-| endpoint | No | The fileserver where your resource is hosted. E.g., if your resource ist hosted at "https://example.com/static/models/my-model.glb", the endpoint would be "https://example.com/static/models/". |
-| resource | No | The filename of the resource to be loaded from the endpoint. E.g., if your resource ist hosted at "https://example.com/static/models/my-model.glb", the filename would be "my-model.glb". |
+| endpoint | No | The fileserver where your resource is hosted. E.g., if your resource is hosted at "https://example.com/static/models/my-model.glb", the endpoint would be "https://example.com/static/models/". |
+| resource | No | The filename of the resource to be loaded from the endpoint. E.g., if your resource is hosted at "https://example.com/static/models/my-model.glb", the filename would be "my-model.glb". |
 | instance | Yes | The instance where the Kompakkt viewer is hosted. This defaults to the University of Cologne Kompakkt instance. |
 | settings | Yes | The filename of the settings file associated with the loaded resource. If settings are not set, they can be created and exported inside of the standalone Kompakkt Viewer. |
-| annotations | Yes | The filename of the annotations file associated with the loaded resouce. If no annotations file is given, annotations can be created and exported inside of the standalone Kompakkt Viewer. |
+| annotations | Yes | The filename of the annotations file associated with the loaded resource. If no annotations file is given, annotations can be created and exported inside of the standalone Kompakkt Viewer. |
 
 ```html
 <body>

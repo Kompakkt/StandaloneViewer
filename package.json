@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "swc kompakkt-standalone.js -o kompakkt-standalone.min.js"
+    "build": "swc kompakkt-standalone.js -o kompakkt-standalone.min.js --source-maps"
   },
   "author": "",
   "license": "ISC",
   "keywords": [],
   "devDependencies": {
-    "@swc/cli": "^0.1.57",
-    "@swc/core": "^1.2.222"
-  }
+    "@swc/cli": "^0.8.1",
+    "@swc/core": "^1.15.41"
+  },
+  "trustedDependencies": [
+    "@swc/core"
+  ]
 }

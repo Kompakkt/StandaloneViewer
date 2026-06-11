@@ -1,12 +1,13 @@
 {
   "minify": true,
   "jsc": {
-    "target": "es5",  
+    "target": "es2017",
     "minify": {
       "compress": {
         "unused": true
       },
       "mangle": true
     }
-  }
+  },
+  "sourceMaps": true
 }
