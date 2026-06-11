@@ -16,7 +16,7 @@ Include the `kompakkt-standalone.js` or the `kompakkt-standalone.min.js` JavaScr
 ```
 
 This file will add a custom element called `<app-kompakkt>`, which can now be used to load the standalone version of the viewer.
-By default, this will target the [Kompakkt instance hosted at the University of Cologne](https://kompakkt.de/viewer/index.html).
+By default, this will target the [Kompakkt instance hosted at the TIB Hanover](https://kompakkt.de/viewer/index.html).
 
 The `<app-kompakkt>`-element needs at mininum the `endpoint` and the `resource` attributes to work.
 
